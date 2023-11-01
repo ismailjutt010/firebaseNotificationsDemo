@@ -1,11 +1,19 @@
 import 'package:demonitification/home_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
- await Firebase.initializeApp();
-  runApp( MyApp());
+  await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(
+      _firebaseMessagingBackgroudHandler );
+  runApp(const MyApp());
+}
+ @pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroudHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print(message.notification!.title.toString());
 }
 
 class MyApp extends StatelessWidget {
